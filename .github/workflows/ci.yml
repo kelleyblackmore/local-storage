@@ -96,12 +96,13 @@ jobs:
         run: |
           docker run -v ${{ github.workspace }}:/workspace -w /workspace quay.io/centos/centos:stream10 bash -c "
             dnf install -y rpm-build &&
-            ./build.sh
+            ./build.sh &&
+            cp /root/rpmbuild/RPMS/noarch/artifact-api-local-*.rpm /workspace/
           "
-
+          
       - name: Upload RPM artifact
         uses: actions/upload-artifact@v4
         with:
           name: artifact-api-local-rpm
-          path: ./rpmbuild/RPMS/noarch/artifact-api-local-*.rpm
+          path: artifact-api-local-*.rpm
           if-no-files-found: error
