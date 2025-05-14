@@ -91,15 +91,11 @@ jobs:
     needs: security
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Set up CentOS environment and build RPM
         run: |
-          docker run -v ${{ github.workspace }}:/workspace -w /workspace centos:7 bash -c "
-            yum-config-manager --save --setopt=base.skip_if_unavailable=true &&
-            yum-config-manager --save --setopt=updates.skip_if_unavailable=true &&
-            echo 'baseurl=http://vault.centos.org/7.9.2009/os/x86_64/' > /etc/yum.repos.d/CentOS-Base.repo &&
-            yum clean all &&
-            yum install -y rpm-build &&
+          docker run -v ${{ github.workspace }}:/workspace -w /workspace quay.io/centos/centos:stream10 bash -c "
+            dnf install -y rpm-build &&
             ./build.sh
           "
 
