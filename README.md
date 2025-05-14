@@ -2,6 +2,7 @@
 
 A local-only FastAPI-based service for storing, listing, downloading, and deleting files (artifacts) on your server. Includes a web UI for easy file management.
 
+[![CI/CD Pipeline](https://github.com/kelleyblackmore/local-storage/actions/workflows/ci.yml/badge.svg)](https://github.com/kelleyblackmore/local-storage/actions/workflows/ci.yml)
 ## Features
 - Upload, download, and delete files via API or web UI
 - List all uploaded files with metadata
@@ -56,6 +57,8 @@ After installation and starting the service, you can access it at:
 
 - Web UI: http://127.0.0.1:54321
 - API Base URL: http://127.0.0.1:54321
+- Prod URL: http:0.0.0.0:8000
+
 
 To verify the service is running:
 ```sh
