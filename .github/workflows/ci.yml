@@ -85,7 +85,6 @@ jobs:
         run: |
           python -m pip install safety
           safety check -r api/requirements.txt
-
   build:
     name: Build RPM
     runs-on: ubuntu-latest
@@ -96,6 +95,10 @@ jobs:
       - name: Set up CentOS environment and build RPM
         run: |
           docker run -v ${{ github.workspace }}:/workspace -w /workspace centos:7 bash -c "
+            yum-config-manager --save --setopt=base.skip_if_unavailable=true &&
+            yum-config-manager --save --setopt=updates.skip_if_unavailable=true &&
+            echo 'baseurl=http://vault.centos.org/7.9.2009/os/x86_64/' > /etc/yum.repos.d/CentOS-Base.repo &&
+            yum clean all &&
             yum install -y rpm-build &&
             ./build.sh
           "
