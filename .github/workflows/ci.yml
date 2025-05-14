@@ -48,9 +48,15 @@ jobs:
           python -m pip install --upgrade pip
           cd api && pip install -r requirements.txt
           
+      - name: Start API server
+        run: |
+          cd api
+          python main.py &
+          sleep 5  # Give the server time to start
+          
       - name: Run tests
         run: |
-          cd api && python -m pytest tests/
+          cd api
           python test_api.py
 
   security:
