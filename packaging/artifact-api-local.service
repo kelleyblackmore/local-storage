@@ -1,0 +1,18 @@
+[Unit]
+Description=Local Artifact Storage API
+After=network.target
+
+[Service]
+Type=simple
+User=artifact-api-local
+Group=artifact-api-local
+WorkingDirectory=/opt/artifact-api-local
+Environment=ARTIFACT_STORAGE_PATH=/var/lib/artifact-api
+Environment=ARTIFACT_API_HOST=127.0.0.1
+Environment=ARTIFACT_API_PORT=54321
+ExecStart=/opt/artifact-api-local/venv/bin/python /opt/artifact-api-local/main.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target 
