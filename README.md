@@ -66,7 +66,7 @@ To verify the service is running:
 sudo systemctl status artifact-api-local
 
 # Test the health endpoint
-curl http://127.0.0.1:54321/health
+curl http://0.0.0.0:8000/health
 ```
 
 ### Troubleshooting

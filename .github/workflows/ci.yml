@@ -3,6 +3,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main ]
 
@@ -106,3 +108,49 @@ jobs:
           name: artifact-api-local-rpm
           path: artifact-api-local-*.rpm
           if-no-files-found: error
+
+  release:
+    name: Create Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download RPM artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact-api-local-rpm
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifact-api-local-*.rpm
+          body: |
+            ## Local Artifact Storage API v1.0.0
+            
+            ### Features
+            - File upload and download functionality
+            - File listing with metadata
+            - File deletion
+            - Web UI for file management
+            - Health check endpoint
+            
+            ### Installation
+            ```bash
+            # Install the RPM
+            sudo rpm -ivh artifact-api-local-1.0.0-1.el10.noarch.rpm
+            
+            # Start the service
+            sudo systemctl start artifact-api-local
+            
+            # Enable service on boot
+            sudo systemctl enable artifact-api-local
+            ```
+            
+            ### Configuration
+            - Storage location: `/var/lib/artifact-api`
+            - Web interface: `http://localhost:8000`
+            - API endpoints available at `http://localhost:8000/api/`
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
