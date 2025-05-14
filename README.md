@@ -2,8 +2,23 @@
 
 A local-only FastAPI-based service for storing, listing, downloading, and deleting files (artifacts) on your server. Includes a web UI for easy file management.
 
+This service provides a simple HTTP API for storing and retrieving artifacts locally. It's designed to be:
+- Local-only (no external networking dependencies)
+- Easy to install via RPM
+- Managed via systemd
+- Secure and configurable
+
 [![CI/CD Pipeline](https://github.com/kelleyblackmore/local-storage/actions/workflows/ci.yml/badge.svg)](https://github.com/kelleyblackmore/local-storage/actions/workflows/ci.yml)
+
+![Local Storage UI](docs/images/local-storage.png)
+
+
 ## Features
+- File upload endpoint (`POST /upload`)
+- Health check endpoint (`GET /health`)
+- Configurable storage location
+- Logging to system journal
+- Runs as a dedicated service user
 - Upload, download, and delete files via API or web UI
 - List all uploaded files with metadata
 - Simple, local storage (no cloud dependencies)
@@ -124,21 +139,7 @@ python3 test_api.py
 
 For more details, see the code and comments in `api/main.py` and `test_api.py`.
 
-## 🎯 Project Overview
 
-This service provides a simple HTTP API for storing and retrieving artifacts locally. It's designed to be:
-- Local-only (no external networking dependencies)
-- Easy to install via RPM
-- Managed via systemd
-- Secure and configurable
-
-## 📋 Features
-
-- File upload endpoint (`POST /upload`)
-- Health check endpoint (`GET /health`)
-- Configurable storage location
-- Logging to system journal
-- Runs as a dedicated service user
 
 ## 🛠️ Installation
 
@@ -230,9 +231,6 @@ python3 -m pytest tests/
 curl -X POST -F "file=@test.txt" http://localhost:54321/upload
 ```
 
-## 📝 License
-
-MIT License
 
 ## 🤝 Contributing
 
@@ -240,6 +238,3 @@ MIT License
 2. Create a feature branch
 3. Submit a pull request
 
-## 🔍 Project Plan
-
-See the detailed project plan in [PROJECT_PLAN.md](PROJECT_PLAN.md) 
