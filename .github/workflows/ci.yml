@@ -86,25 +86,23 @@ jobs:
           python -m pip install safety
           safety check -r api/requirements.txt
 
-  build:
-    name: Build RPM
-    runs-on: ubuntu-latest
-    needs: security
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up RPM build environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rpm rpm-build
-          
-      - name: Build RPM
-        run: |
+build:
+  name: Build RPM
+  runs-on: ubuntu-latest
+  needs: security
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up CentOS environment and build RPM
+      run: |
+        docker run -v ${{ github.workspace }}:/workspace -w /workspace centos:7 bash -c "
+          yum install -y rpm-build &&
           ./build.sh
-          
-      - name: Upload RPM artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifact-api-local-rpm
-          path: ~/rpmbuild/RPMS/noarch/artifact-api-local-*.rpm
-          if-no-files-found: error 
+        "
+
+    - name: Upload RPM artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: artifact-api-local-rpm
+        path: ./rpmbuild/RPMS/noarch/artifact-api-local-*.rpm
+        if-no-files-found: error
