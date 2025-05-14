@@ -8,6 +8,28 @@ from pathlib import Path
 
 # API configuration
 API_BASE_URL = "http://127.0.0.1:54321"
+PROD_API_BASE_URL = "http://0.0.0.0:8000"  # Changed to http since we're not using SSL in CI
+
+def check_api_availability(url):
+    """Check if an API endpoint is available."""
+    try:
+        response = requests.get(f"{url}/health", timeout=5)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+def get_available_api_url():
+    """Get the first available API URL."""
+    urls = [API_BASE_URL, PROD_API_BASE_URL]
+    for url in urls:
+        print(f"Checking API availability at {url}...")
+        if check_api_availability(url):
+            print(f"✓ API is available at {url}")
+            return url
+    raise ConnectionError("No API endpoints are available")
+
+# Get the first available API URL
+API_BASE_URL = get_available_api_url()
 
 def test_health():
     """Test the health check endpoint."""
