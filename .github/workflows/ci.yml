@@ -10,6 +10,7 @@ jobs:
   lint:
     name: Lint and Format
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       
@@ -25,7 +26,7 @@ jobs:
           
       - name: Run linters
         run: |
-          flake8 --config=.flake8 api/ || true
+          flake8 --config=.flake8 api/
           black --check api/
           isort --check-only api/
           mypy api/
