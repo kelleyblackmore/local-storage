@@ -57,7 +57,7 @@ jobs:
       - name: Run tests
         run: |
           cd api
-          python test_api.py
+          python ../tests/test_api.py
 
   security:
     name: Security Scan
